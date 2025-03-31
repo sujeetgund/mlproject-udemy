@@ -54,7 +54,11 @@ mlproject-udemy/
 ├── setup.py
 ├── requirements.txt
 ├── logs/
-│   └── *.log # Log files
+│   └── *.txt # Log files
+├── artifacts/
+│   ├── raw_data.csv
+│   ├── train.csv
+│   └── test.csv
 ├── notebooks/
 │   ├── eda.ipynb
 │   ├── model_training.ipynb
@@ -81,7 +85,10 @@ mlproject-udemy/
 - **`logger.py`**: Handles logging for tracking events, stored in the `logs` folder.
 - **`exception.py`**: Custom exception handling.
 - **`utils.py`**: Utility functions for data processing.
-- **`data_ingestion.py`**: Handles data loading.
+- **`data_ingestion.py`**: Handles data loading. After running, the `artifacts` folder will contain:
+  - `raw_data.csv`: The original dataset.
+  - `train.csv`: Training data split.
+  - `test.csv`: Testing data split.
 - **`data_transformation.py`**: Prepares and transforms data for modeling.
 - **`model_trainer.py`**: Trains and evaluates the model.
 - **`train_pipeline.py`**: End-to-end pipeline for training.
@@ -91,12 +98,17 @@ mlproject-udemy/
 - **`notebooks/data/stud.csv`**: Student performance dataset.
 
 ## Usage
-1. Run the training pipeline:
+1. Run the data ingestion process to generate artifacts:
+```bash
+python src/components/data_ingestion.py
+```
+
+2. Run the training pipeline:
 ```bash
 python src/pipelines/train_pipeline.py
 ```
 
-2. Run the prediction pipeline:
+3. Run the prediction pipeline:
 ```bash
 python src/pipelines/predict_pipeline.py
 ```
