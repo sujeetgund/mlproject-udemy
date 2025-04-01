@@ -58,7 +58,8 @@ mlproject-udemy/
 ├── artifacts/
 │   ├── raw_data.csv
 │   ├── train.csv
-│   └── test.csv
+│   ├── test.csv
+│   └── preprocessor.pkl # Saved preprocessor after transformation
 ├── notebooks/
 │   ├── eda.ipynb
 │   ├── model_training.ipynb
@@ -89,7 +90,8 @@ mlproject-udemy/
   - `raw_data.csv`: The original dataset.
   - `train.csv`: Training data split.
   - `test.csv`: Testing data split.
-- **`data_transformation.py`**: Prepares and transforms data for modeling.
+- **`data_transformation.py`**: Prepares and transforms data for modeling. After running, it generates:
+  - `preprocessor.pkl`: The saved preprocessor object.
 - **`model_trainer.py`**: Trains and evaluates the model.
 - **`train_pipeline.py`**: End-to-end pipeline for training.
 - **`predict_pipeline.py`**: Pipeline for making predictions.
@@ -103,12 +105,18 @@ mlproject-udemy/
 python src/components/data_ingestion.py
 ```
 
-2. Run the training pipeline:
+2. Run the data transformation process:
+```bash
+python src/components/data_transformation.py
+```
+This will generate `preprocessor.pkl` inside the `artifacts/` folder.
+
+3. Run the training pipeline:
 ```bash
 python src/pipelines/train_pipeline.py
 ```
 
-3. Run the prediction pipeline:
+4. Run the prediction pipeline:
 ```bash
 python src/pipelines/predict_pipeline.py
 ```
