@@ -2,6 +2,7 @@ import os
 from src.exception import CustomException
 from src.logger import logger
 from src.components.data_transformation import DataTransformation
+from src.components.model_trainer import ModelTrainer
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -50,7 +51,10 @@ if __name__ == "__main__":
     train_data_path, test_data_path = data_ingestion.init_data_ingestion()
 
     data_transformation = DataTransformation()
-    _, _, preprocessor_filepath = data_transformation.init_data_transformation(
+    train_arr, test_arr, _ = data_transformation.init_data_transformation(
         train_data_path=train_data_path, test_data_path=test_data_path
     )
-    print(f"Preprocessor saved at: {preprocessor_filepath}")
+    
+    model_trainer = ModelTrainer()
+    best_score = model_trainer.init_model_trainer(train_arr, test_arr)
+    print(f"Best Model Score: {best_score}")
