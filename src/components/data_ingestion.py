@@ -21,40 +21,49 @@ class DataIngestion:
         self.config = DataIngestionConfig()
 
     def init_data_ingestion(self) -> tuple[str, str]:
+        """
+        Performs the data ingestion process, which includes loading raw data,
+        splitting it into training and testing datasets, and saving the results
+        to specified file paths.
+
+        Steps:
+        1. Loads the dataset from a CSV file.
+        2. Creates the necessary directory for storing artifacts.
+        3. Saves the raw data to the specified raw data path.
+        4. Splits the data into training and testing datasets.
+        5. Saves the training and testing datasets to their respective file paths.
+
+        Raises:
+            CustomException: If any error occurs during the data ingestion process.
+
+        Returns:
+            tuple[str, str]: A tuple containing the file paths of the training
+            and testing datasets.
+        """
+
         logger.info("Data Ingestion started")
         try:
+            logger.info("Loading dataset")
+            # Load the dataset from a CSV file
             df = pd.read_csv("notebooks/data/stud.csv")
-            logger.info("Data loaded successfully")
 
+            logger.info("Creating artifacts directory")
+            # Create the artifacts directory if it doesn't exist
             os.makedirs("artifacts", exist_ok=True)
-            logger.info("Artifacts directory created")
 
+            logger.info("Saving raw data")
+            # Save the raw data to the specified path
             df.to_csv(self.config.raw_data_path, index=False)
-            logger.info("Raw data saved successfully")
 
             train_df, test_df = train_test_split(df, test_size=0.2, random_state=42)
-            logger.info("Train test split done")
 
+            logger.info("Saving train and test data")
+            # Save the training and testing datasets to their respective paths
             train_df.to_csv(self.config.train_data_path, index=False)
             test_df.to_csv(self.config.test_data_path, index=False)
-            logger.info("Train and test data saved successfully")
-
-            logger.info("Data Ingestion completed")
 
             return (self.config.train_data_path, self.config.test_data_path)
         except Exception as e:
             raise CustomException(e)
-
-
-if __name__ == "__main__":
-    data_ingestion = DataIngestion()
-    train_data_path, test_data_path = data_ingestion.init_data_ingestion()
-
-    data_transformation = DataTransformation()
-    train_arr, test_arr, _ = data_transformation.init_data_transformation(
-        train_data_path=train_data_path, test_data_path=test_data_path
-    )
-
-    model_trainer = ModelTrainer()
-    best_score = model_trainer.init_model_trainer(train_arr, test_arr)
-    print(f"Best Model Score: {best_score}")
+        finally:
+            logger.info("Data Ingestion completed")

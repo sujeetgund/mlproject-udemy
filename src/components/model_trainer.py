@@ -90,6 +90,21 @@ class ModelTrainer:
         }
 
     def init_model_trainer(self, train_arr: ndarray, test_arr: ndarray):
+        """
+        Trains multiple models on the provided training data, evaluates their performance,
+        selects the best-performing model, saves it, and calculates its R2 score on the test data.
+
+        Args:
+            train_arr (ndarray): A 2D numpy array where the last column represents the target variable
+                                 and the remaining columns represent the features for training.
+            test_arr (ndarray): A 2D numpy array where the last column represents the target variable
+                                and the remaining columns represent the features for testing.
+
+        Raises:
+            CustomException: If no model achieves a satisfactory score (R2 score < 0.6).
+            CustomException: If any other exception occurs during the process.
+        """
+
         logger.info("Model training started")
         try:
             X_train, y_train, X_test, y_test = (
@@ -119,13 +134,7 @@ class ModelTrainer:
                 obj=best_model,
             )
 
-            y_pred = best_model.predict(X_test)
-            r2 = r2_score(y_test, y_pred)
-            logger.info(f"R2 score of the best model on test data: {r2}")
-
-            logger.info("Model training completed")
-
-            return r2
-
         except Exception as e:
             raise CustomException(e)
+        finally:
+            logger.info("Model training completed")

@@ -8,6 +8,7 @@ This project aims to predict student performance based on various factors such a
 - [Installation](#installation)
 - [Project Structure](#project-structure)
 - [Usage](#usage)
+- [Allowed Values for New Data](#allowed-values-for-new-data)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -80,7 +81,7 @@ mlproject-udemy/
     └── pipelines/
         ├── __init__.py
         ├── train_pipeline.py
-        └── predict_pipeline.py
+        ├── predict_pipeline.py
 ```
 
 ### Description of Main Modules:
@@ -96,38 +97,57 @@ mlproject-udemy/
   - Transformed train and test data arrays.
 - **`model_trainer.py`**: Trains multiple machine learning models, selects the best one based on R2 score, and saves it as `model.pkl`.
 - **`train_pipeline.py`**: End-to-end pipeline for training.
-- **`predict_pipeline.py`**: Pipeline for making predictions.
+- **`predict_pipeline.py`**: Pipeline for making predictions. You can modify `predict_pipeline.py` to use different student data for predictions.
 - **`notebooks/eda.ipynb`**: Exploratory Data Analysis notebook.
 - **`notebooks/model_training.ipynb`**: Model training and evaluation notebook.
 - **`notebooks/data/stud.csv`**: Student performance dataset.
 
 ## Usage
-1. Run the data ingestion process to generate artifacts:
-```bash
-python src/components/data_ingestion.py
-```
-
-2. Run the data transformation process:
-```bash
-python src/components/data_transformation.py
-```
-This will generate `preprocessor.pkl` inside the `artifacts/` folder.
-
-3. Run the model training process:
-```bash
-python src/components/model_trainer.py
-```
-This will train multiple models, select the best one, and save it as `model.pkl`.
-
-4. Run the training pipeline:
+### Running the Full Project
+To run the full project, execute:
 ```bash
 python src/pipelines/train_pipeline.py
 ```
+This will handle data ingestion, transformation, and model training.
 
-5. Run the prediction pipeline:
+### Running Predictions
+To make predictions, execute:
 ```bash
 python src/pipelines/predict_pipeline.py
 ```
+If you want to predict using different student data, modify the following section inside `predict_pipeline.py`:
+```python
+students_data = CustomData(
+    records=[
+        StudentExamRecord(
+            gender="male",
+            race_ethnicity="group B",
+            parental_level_of_education="some college",
+            lunch="standard",
+            test_preparation_course="none",
+            reading_score=72,
+            writing_score=83,
+        ),
+        StudentExamRecord(
+            gender="female",
+            race_ethnicity="group C",
+            parental_level_of_education="bachelor's degree",
+            lunch="free/reduced",
+            test_preparation_course="completed",
+            reading_score=88,
+            writing_score=92,
+        ),
+    ]
+)
+```
+
+## Allowed Values for New Data
+- **Gender:** `male`, `female`
+- **Race/Ethnicity:** `group A`, `group B`, `group C`, `group D`, `group E`
+- **Parental Level of Education:** `some high school`, `high school`, `some college`, `associate's degree`, `bachelor's degree`, `master's degree`
+- **Lunch:** `standard`, `free/reduced`
+- **Test Preparation Course:** `none`, `completed`
+- **Reading Score & Writing Score:** Numerical values between 0 and 100
 
 ## Contributing
 Contributions are welcome! Please follow these steps:

@@ -61,6 +61,24 @@ class DataTransformation:
     def init_data_transformation(
         self, train_data_path: str, test_data_path: str
     ) -> tuple[np.ndarray, np.ndarray, str]:
+        """
+        Performs data transformation on training and testing datasets, including preprocessing,
+        feature engineering, and saving the preprocessor object for future use.
+
+        Args:
+            train_data_path (str): Path to the training dataset CSV file.
+            test_data_path (str): Path to the testing dataset CSV file.
+
+        Raises:
+            CustomException: If any error occurs during the data transformation process.
+
+        Returns:
+            tuple[np.ndarray, np.ndarray, str]: A tuple containing:
+                - np.ndarray: Transformed training dataset.
+                - np.ndarray: Transformed testing dataset.
+                - str: Path to the saved preprocessor object.
+        """
+
         logger.info("Data Transformation started")
 
         try:
